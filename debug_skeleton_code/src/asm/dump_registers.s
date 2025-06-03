@@ -4,11 +4,17 @@
 dump_registers:
 
 movq $5, %rax
-movq $27, %rbx
+movq $7, %rbx
+movq $3, %rcx
+movq $-4, %rdx
 
-movq $24, %r10
-movq $2, %rsi
-movq $13, %r15
+movq $4, %r10
+movq $2, %r8
+movq $3, %r9
+movq $11, %rsi
+movq $-14, %r14
+movq $15, %r15
+movq $24, %rdi
 
 # push %rsp
 #push %rbp and not use it later
@@ -21,10 +27,11 @@ push %r10
 push %r9
 push %r8
 
-# count this difference
-#push %rsp
-leaq (-64)(%rsp), %r8   
-push %r8
+# Current RSP + 8 bytes (for each register pushed) + 8 bytes (return address)
+movq %rsp, %r8
+addq $(8*8 + 8), %r8
+push %r8            # Push original RSP
+
 
 push %rbp
 push %rdi
@@ -36,10 +43,10 @@ push %rax
 
 
     
-subq $(16*8), %rsp
+#subq $(16*8), %rsp
 movq %rsp, %rdi
 call _debug_dump_registers
-addq $(16*8), %rsp
+#addq $(16*8), %rsp
 
 pop %rax
 pop %rbx
