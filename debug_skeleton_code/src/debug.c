@@ -25,5 +25,7 @@ char const *regnames[] = {
 void
 _debug_dump_registers(long const *regs)
 {
-
+    for (int i = 0; i < 16; i++){
+        printf("%s\t%ld (0x%lx)\n", regnames[i], regs[i], regs[i]);
+    }
 }
