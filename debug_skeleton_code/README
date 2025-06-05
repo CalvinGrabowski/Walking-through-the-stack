@@ -27,10 +27,11 @@ The main function is responsible for calling f.
 
     dump_register.s:
 	dump_register.s (currently) first moves many integer values to most of the registers for testing purposes in order to see if the program works properly. 
-	Then, the dumping part begins by pushing r15 through r8. As rsp is intended to also be pushed onto the stack whilst having a value prior to the dump_register call, 
-	dump_register uses r8 as a temporary register for rsp's value. 
+	Then, the dumping part begins by pushing r15 through r8. As rsp is intended to also be pushed onto the stack whilst having a value prior 
+	to the dump_register call, dump_register uses r8 as a temporary register for rsp's value. 
 	r8 stores (8 * the amount of registers already pushed), plus 8 bytes for the return address, then it's pushed.
-	Next, the rest of the registers, rbp through rax, are pushed. _debug_dump_registers in debug.c is called with the first argument being rsp in order to access the stack.
+	Next, the rest of the registers, rbp through rax, are pushed. 
+	_debug_dump_registers in debug.c is called with the first argument being rsp in order to access the stack.
 	_debug_dump_registers is responsible for printing register values in this format: <register name>, <register value>, <register value (hex)>
 	Finally, registers rax through r15 are popped from the stack before dump_register returns.
  
@@ -40,7 +41,8 @@ The main function is responsible for calling f.
 	The main ideas of stack_backtrace.s is to begin with the current frame pointer which was r13 first initialized to rbp, 
 	and then continue through a loop until the current frame pointer was invalid. 
 	The loop in question gets the return address from the current function frame, which is held in r14. 
-	If the return address is a valid address, then dladdr is called where r14 is the first argument and the address of dl_info on the stack is the second argument. 
+	If the return address is a valid address, then dladdr is called where r14 is 
+	the first argument and the address of dl_info on the stack is the second argument. 
 	The symbol name is retrieved from r15 which holds dls_name and the file name is retrieved from rbx which holds dlf_name. 
 	Assuming everything works properly, the print_entry label calls printf with the format of <depth>, <symbol address>, <symbol name>, <file name>, 
 	and the loop continues until the stack has been completely backtraced. 
@@ -50,4 +52,5 @@ ________________________________________________________
 Lessons Learned:
 The main concepts that we learned more about were how to push all registers onto the stack while preserving rsp's original value before the function call, 
 how rbp relates to walking the stack, how dladdr and libdl worked with retrieving information, how to print in different formats such as hexadecimal, and more. 
-Overall, while the program isn't very long, it was conceptually dense and challenging to fully grasp, but this program is now complete with an understanding of these concepts.
+Overall, while the program isn't very long, it was conceptually dense and challenging to fully grasp, 
+but this program is now complete with an understanding of these concepts.
