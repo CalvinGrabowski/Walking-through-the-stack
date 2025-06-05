@@ -38,15 +38,14 @@ The main function is responsible for calling f.
     stack_backtrace.s:
 	stack_backtrace.s is conceptually and technically more complicated. 
 	The main ideas of stack_backtrace.s is to begin with the current frame pointer which was r13 first initialized to rbp, 
-	and then continue through a loop until the current frame pointer is nullptr or the current frame pointer was invalid. 
+	and then continue through a loop until the current frame pointer was invalid. 
 	The loop in question gets the return address from the current function frame, which is held in r14. 
 	If the return address is a valid address, then dladdr is called where r14 is the first argument and the address of dl_info on the stack is the second argument. 
 	The symbol name is retrieved from r15 which holds dls_name and the file name is retrieved from rbx which holds dlf_name. 
 	Assuming everything works properly, the print_entry label calls printf with the format of <depth>, <symbol address>, <symbol name>, <file name>, 
 	and the loop continues until the stack has been completely backtraced. 
-	Finally, the stack is cleaned, callee-saved registers are restored, and stack_backtrace leaves and returns.
+	Finally, the stack is cleaned and stack_backtrace leaves and returns.
 ________________________________________________________
-
 
 Lessons Learned:
 The main concepts that we learned more about were how to push all registers onto the stack while preserving rsp's original value before the function call, 
